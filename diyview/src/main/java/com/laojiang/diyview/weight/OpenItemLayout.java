@@ -140,6 +140,9 @@ public class OpenItemLayout extends LinearLayout {
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 if (interpolatedTime==1){
                     v.setVisibility(GONE);
+                    if (rlContent!=null){
+                        rlContent.removeAllViews();
+                    }
                 }else {
                     v.getLayoutParams().height = measuredHeight-(int) (measuredHeight*interpolatedTime);
                     v.requestLayout();
@@ -154,9 +157,7 @@ public class OpenItemLayout extends LinearLayout {
         animation.setDuration(300);
         v.startAnimation(animation);
 
-        if (rlContent!=null){
-            rlContent.removeAllViews();
-        }
+
     }
 
     //打开
