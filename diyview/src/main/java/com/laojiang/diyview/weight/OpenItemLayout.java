@@ -1,6 +1,7 @@
 package com.laojiang.diyview.weight;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -34,6 +35,7 @@ public class OpenItemLayout extends LinearLayout {
     private ImageView ivJiantou;
     private int imageId;
     private ImageView imageView;
+    private int titleBackGround;
 
     public OpenItemLayout(Context context) {
         super(context);
@@ -43,8 +45,13 @@ public class OpenItemLayout extends LinearLayout {
     public OpenItemLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        //自定义属性
+        TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.myView);
+        titleBackGround = ta.getColor(R.styleable.myView_titleBackground, getResources().getColor(R.color.color_1));
+
         LayoutInflater.from(context).inflate(R.layout.linearlayout_open,this);
         init();
+        ta.recycle();
     }
 
     @Override
@@ -77,6 +84,7 @@ public class OpenItemLayout extends LinearLayout {
                 rotateArrow();
             }
        });
+        rlTitle.setBackgroundColor(titleBackGround);
     }
     public  void rotateArrow(){
         int degree = 0;
