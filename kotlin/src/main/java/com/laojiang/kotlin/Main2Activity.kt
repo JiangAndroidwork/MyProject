@@ -1,14 +1,16 @@
 package com.laojiang.kotlin
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.support.annotation.RequiresApi
 import android.util.Log
 import android.view.View
 import cn.laojiang.kotlin.bean.Person
 import com.laojiang.imagepickers.ImagePicker
-import com.laojiang.imagepickers.data.ImageBean
 import com.laojiang.imagepickers.data.ImagePickType
+import com.laojiang.imagepickers.data.MediaDataBean
 import com.laojiang.imagepickers.utils.GlideImagePickerDisplayer
 import com.laojiang.kotlin.adapter.Adapter
 import com.laojiang.kotlin.base.BaseActivity
@@ -22,31 +24,40 @@ class Main2Activity : BaseActivity() {
     private val RESULT_CODE = 202
 
     override fun onClick(v: View, id: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       when(id){
+       }
     }
-
     override val contentViewResId: Int
         get() = R.layout.activity_main2
-
     override fun initData() {
     }
-
     var str = { a: String, b: String -> a + b }
-
-
     override fun beforSetContentView(savedInstanceState: Bundle) {
         super.beforSetContentView(savedInstanceState)
-
     }
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun initUI(mContentView: View) {
-        val person = Person()
+        relativeLayout {
+            var bt = button("图片选择器") {
+                onClick {
+                    initPhoto()
+                }
+                background = this@Main2Activity.getDrawable(R.drawable.bg)
+            }.lparams {
+                width = px2dip(500).toInt()
+                height = px2dip(500).toInt()
+                centerHorizontally()
+            }
+        }
 
     }
+
     fun asyncPrise(){
         async {  }
     }
     fun alert(){
-        alert("弹窗内容"){
+
+        alert("还有谁啊","我是标题"){
 
             yesButton{
                 toast("确定按钮")
@@ -59,12 +70,9 @@ class Main2Activity : BaseActivity() {
         Log.i("数据解构==",name.toString()+"\n"+age.toString())
     }
     private fun setView() {
-
         verticalLayout {
-
             padding = dip(16)
             val tvName = textView("设置按钮"){
-
                 onClick { showShortToast("1111") }
             } .lparams {
                 width= wrapContent
@@ -72,11 +80,9 @@ class Main2Activity : BaseActivity() {
                 horizontalMargin=40
             }
             val button = button("还有谁"){
-
             }.lparams{
                 width= px2dip(100).toInt()
                 height = px2dip(40).toInt()
-
             }
         }
     }
@@ -102,6 +108,7 @@ class Main2Activity : BaseActivity() {
                 .needCamera(true)
                 .cachePath(cachePath)
                 .displayer(GlideImagePickerDisplayer())
+                .needVideo(true)
                 .build()
         build.start(this, REQUEST_CODE, RESULT_CODE)
     }
@@ -109,7 +116,7 @@ class Main2Activity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_CODE && data != null) {
-            val dataList = data.getParcelableArrayListExtra<ImageBean>(ImagePicker.INTENT_RESULT_DATA)
+            val dataList = data.getParcelableArrayListExtra<MediaDataBean>(ImagePicker.INTENT_RESULT_DATA)
             Log.i("收到的数据结果===", dataList.toString())
         }
     }

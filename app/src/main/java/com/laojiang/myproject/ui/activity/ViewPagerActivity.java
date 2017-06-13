@@ -125,6 +125,5 @@ public class ViewPagerActivity extends AppCompatActivity {
         ivTap2.setBackgroundResource(R.color.colorAccent);
         ivTap3.setBackgroundResource(R.color.colorAccent);
         ivTap4.setBackgroundResource(R.color.colorAccent);
-
     }
 }

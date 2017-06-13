@@ -1,9 +1,13 @@
 package com.laojiang.myproject.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -56,6 +60,20 @@ public class FragmentPagerActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        ConnectivityManager systemService = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = systemService.getActiveNetworkInfo();
+        if (activeNetworkInfo==null||!activeNetworkInfo.isConnected()){
+            Log.i("网络状态===","没有网络");
+        }else if (activeNetworkInfo!=null){
+            switch (activeNetworkInfo.getType()) {
+                case ConnectivityManager.TYPE_MOBILE:
+                    Log.i("网络状态===", "移动网络");
+                    break;
+                case ConnectivityManager.TYPE_WIFI:
+                    Log.i("网络状态===", "WIFI");
+                    break;
+            }
+        }
         setNoSelect();
         ivTap1.setBackgroundResource(R.color.colorPrimary);
         if (null==fragmentTab1){
