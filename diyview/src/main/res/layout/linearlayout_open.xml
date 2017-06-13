@@ -50,6 +50,6 @@
         android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-
+        android:gravity="center"
         android:visibility="gone"></RelativeLayout>
 </LinearLayout>

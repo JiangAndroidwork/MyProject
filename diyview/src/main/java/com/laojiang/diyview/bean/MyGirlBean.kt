@@ -8,5 +8,5 @@ class MyGirlBean() {
     var title:String = ""
     var number:Int = 0
     var contentId:Int =-1
-
+    var isClick:Boolean = true
 }

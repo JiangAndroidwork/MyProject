@@ -78,14 +78,23 @@ public class OpenItemLayout extends LinearLayout {
         tvTitle = (TextView) findViewById(R.id.tv_title);
         ivJiantou = (ImageView) findViewById(R.id.iv_jiantou);
         rlContent = (RelativeLayout) findViewById(R.id.rl_content);
+        setTitleListener();
+        rlTitle.setBackgroundColor(titleBackGround);
+    }
+  public void  setNoListener(){
+      if (rlTitle!=null)
+          rlTitle.setOnClickListener(null);
+
+    }
+    public  void setTitleListener() {
         rlTitle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 rotateArrow();
             }
        });
-        rlTitle.setBackgroundColor(titleBackGround);
     }
+
     public  void rotateArrow(){
         int degree = 0;
         if (ivJiantou.getTag()==null||ivJiantou.getTag().equals(true)){
@@ -190,6 +199,5 @@ public class OpenItemLayout extends LinearLayout {
 
         imageView.setImageResource(imageId);
     }
-
 
 }
