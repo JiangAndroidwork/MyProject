@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initOpen() {
+
         OpenItemLayout openItemLayout = (OpenItemLayout) findViewById(R.id.openItem);
         openItemLayout.setTitle("标题");
         openItemLayout.setNumber("1");

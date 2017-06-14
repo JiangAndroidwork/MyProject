@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import com.laojiang.diyview.R
 import com.laojiang.diyview.bean.MyGirlBean
 import com.laojiang.diyview.interf.OnItemListener
 import com.laojiang.diyview.weight.OpenItemLayout
+import com.laojiang.diyview.weight.TestLayout
 import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.android.synthetic.main.item_adapter_open.view.*
+import java.util.*
 
 class Main2Activity : AppCompatActivity(), OnItemListener {
 
@@ -20,8 +23,30 @@ class Main2Activity : AppCompatActivity(), OnItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        iniData()
-        initView()
+        //扩展条目
+//        iniData()
+//        initView()
+        //
+        init1();
+
+    }
+
+    private fun init1() {
+        var testLayout: TestLayout = test_layout
+        val strs = arrayOf("你想咋地","真是不错","哈哈哈","6","真是漂亮极了")
+        var random = Random()
+
+        iv_image.setOnClickListener {
+            var i = random.nextInt(5)
+            var text = TextView(this)
+            text.text = strs[i]
+            text.textSize = 17f
+            text.requestLayout()
+
+
+            text.setBackgroundResource(R.drawable.shape_text_bg)
+            testLayout.addView(text)
+        }
 
     }
 
@@ -44,7 +69,7 @@ class Main2Activity : AppCompatActivity(), OnItemListener {
             }
             bean.title = "我的女友$i"
             list.add(bean)
-    }
+        }
     }
     private fun initView() {
         for (i in list.indices) {
@@ -55,9 +80,10 @@ class Main2Activity : AppCompatActivity(), OnItemListener {
             openLayout!!.setImage(list.get(i).contentId)
             openLayout.id = "110$i".toInt()
             openLayout.setOnItemClickListener(this,"110$i".toInt())
-            ll_content.addView(view)
+//            ll_content.addv(view)
         }
     }
+
     override fun onItemClickOpenListener(view: View, id: Int) {
         Log.i("执行打开接口===",id.toString())
     }
