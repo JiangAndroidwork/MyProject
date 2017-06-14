@@ -2,16 +2,21 @@ package com.laojiang.diyview.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import com.laojiang.diyview.R
 import com.laojiang.diyview.bean.MyGirlBean
+import com.laojiang.diyview.interf.OnItemListener
 import com.laojiang.diyview.weight.OpenItemLayout
 import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.android.synthetic.main.item_adapter_open.view.*
 
-class Main2Activity : AppCompatActivity() {
-    var list = ArrayList<MyGirlBean>()
+class Main2Activity : AppCompatActivity(), OnItemListener {
 
+
+
+    var list = ArrayList<MyGirlBean>()
+    var listId =ArrayList<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -39,24 +44,26 @@ class Main2Activity : AppCompatActivity() {
             }
             bean.title = "我的女友$i"
             list.add(bean)
-        }
     }
-
+    }
     private fun initView() {
-
-        for (i in 0..20) {
+        for (i in list.indices) {
             var view = View.inflate(this, R.layout.item_adapter_open, null)
             var openLayout:OpenItemLayout = view.adapter_openItem
             openLayout!!.setNumber("${i+1}")
             openLayout!!.setTitle(list.get(i).title)
             openLayout!!.setImage(list.get(i).contentId)
+            openLayout.id = "110$i".toInt()
+            openLayout.setOnItemClickListener(this,"110$i".toInt())
             ll_content.addView(view)
         }
-
     }
-
-    private fun otherNo() {
-
-
+    override fun onItemClickOpenListener(view: View, id: Int) {
+        Log.i("执行打开接口===",id.toString())
+    }
+    override fun onItemClickCloseListener(view: View, id: Int) {
+        Log.i("执行关闭接口===",id.toString())
     }
 }
+
+

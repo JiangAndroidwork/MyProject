@@ -13,8 +13,6 @@ import com.laojiang.diyview.weight.OpenItemLayout
  * Created by Jiang on 2017/6/13 13:58.
  */
 class OpenAdapter(var context:Context,var list:List<MyGirlBean>) : BaseAdapter() {
-
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var  viewHolder:ViewHolder ;
        var view:View
@@ -39,7 +37,6 @@ class OpenAdapter(var context:Context,var list:List<MyGirlBean>) : BaseAdapter()
         }
         return view
     }
-
     override fun getItem(position: Int): Any {
         return list.get(position)
     }
@@ -47,7 +44,6 @@ class OpenAdapter(var context:Context,var list:List<MyGirlBean>) : BaseAdapter()
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
     override fun getCount(): Int {
        if (list==null)
            return 0

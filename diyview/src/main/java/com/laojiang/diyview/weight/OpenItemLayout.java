@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.laojiang.diyview.R;
+import com.laojiang.diyview.interf.OnItemListener;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 类介绍（必填）：
@@ -36,6 +39,8 @@ public class OpenItemLayout extends LinearLayout {
     private int imageId;
     private ImageView imageView;
     private int titleBackGround;
+    private OnItemListener listener;
+    private int itemId;
 
     public OpenItemLayout(Context context) {
         super(context);
@@ -46,10 +51,10 @@ public class OpenItemLayout extends LinearLayout {
         super(context, attrs);
         this.context = context;
         //自定义属性
-        TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.myView);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.myView);
         titleBackGround = ta.getColor(R.styleable.myView_titleBackground, getResources().getColor(R.color.color_1));
 
-        LayoutInflater.from(context).inflate(R.layout.linearlayout_open,this);
+        LayoutInflater.from(context).inflate(R.layout.linearlayout_open, this);
         init();
         ta.recycle();
     }
@@ -81,58 +86,75 @@ public class OpenItemLayout extends LinearLayout {
         setTitleListener();
         rlTitle.setBackgroundColor(titleBackGround);
     }
-  public void  setNoListener(){
-      if (rlTitle!=null)
-          rlTitle.setOnClickListener(null);
+
+    public void setNoListener() {
+        if (rlTitle != null)
+            rlTitle.setOnClickListener(null);
 
     }
-    public  void setTitleListener() {
+
+    public void setTitleListener() {
         rlTitle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 rotateArrow();
             }
-       });
+        });
     }
 
-    public  void rotateArrow(){
+    /**
+     * 设置监听时间
+     *
+     * @param listener 打开或关闭 接口
+     * @param id       条目的id
+     */
+    public void setOnItemClickListener(@NotNull OnItemListener listener, int id) {
+        this.listener = listener;
+        this.itemId = id;
+    }
+
+    public void rotateArrow() {
         int degree = 0;
-        if (ivJiantou.getTag()==null||ivJiantou.getTag().equals(true)){
+        if (ivJiantou.getTag() == null || ivJiantou.getTag().equals(true)) {//展开
             ivJiantou.setTag(false);
             degree = -180;
-            if (rlContent!=null&&imageView!=null){
+            if (rlContent != null && imageView != null) {
                 rlContent.addView(imageView);
             }
             expend(rlContent);
-
-        }else if (ivJiantou.getTag().equals(false)){
-            Log.i("执行关闭","执行了");
+            if (listener != null)
+                listener.onItemClickOpenListener(rlContent, itemId);
+        } else if (ivJiantou.getTag().equals(false)) {//关闭
             degree = 0;
             ivJiantou.setTag(true);
             closeContent(rlContent);
+            if (listener != null)
+                listener.onItemClickCloseListener(rlContent, itemId);
         }
         ivJiantou.animate().setDuration(300).rotation(degree);
     }
+
     private void expend(final View v) {
-        v.measure(widthMeasureSpec,heightMeasureSpec);
+        v.measure(widthMeasureSpec, heightMeasureSpec);
         int measuredWidth = v.getMeasuredWidth();
         final int measuredHeight = v.getMeasuredHeight();
         v.setVisibility(VISIBLE);
         //首先设置 布局的高度为0避免有闪烁
         LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ll.height  = 0;
+        ll.height = 0;
         v.setLayoutParams(ll);
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if (interpolatedTime==1){
+                if (interpolatedTime == 1) {
                     v.getLayoutParams().height = measuredHeight;
 
-                }else {
-                    v.getLayoutParams().height = (int) (measuredHeight*interpolatedTime);
+                } else {
+                    v.getLayoutParams().height = (int) (measuredHeight * interpolatedTime);
                 }
                 v.requestLayout();
             }
+
             @Override
             public boolean willChangeBounds() {
                 return true;
@@ -142,22 +164,23 @@ public class OpenItemLayout extends LinearLayout {
         v.startAnimation(animation);
     }
 
-    public void closeContent(final View v){
+    public void closeContent(final View v) {
         final int measuredHeight = v.getMeasuredHeight();
         Animation animation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if (interpolatedTime==1){
+                if (interpolatedTime == 1) {
                     v.setVisibility(GONE);
-                    if (rlContent!=null){
+                    if (rlContent != null) {
                         rlContent.removeAllViews();
                     }
-                }else {
-                    v.getLayoutParams().height = measuredHeight-(int) (measuredHeight*interpolatedTime);
+                } else {
+                    v.getLayoutParams().height = measuredHeight - (int) (measuredHeight * interpolatedTime);
                     v.requestLayout();
                 }
 
             }
+
             @Override
             public boolean willChangeBounds() {
                 return true;
@@ -171,7 +194,7 @@ public class OpenItemLayout extends LinearLayout {
 
     //打开
     private void openContent() {
-        Log.i("被执行","动画效果");
+        Log.i("被执行", "动画效果");
         ivJiantou.animate().setDuration(300).rotation(180).start();
     }
 
@@ -194,10 +217,12 @@ public class OpenItemLayout extends LinearLayout {
         viewContent.setLayoutParams(layoutParams);
         rlContent.addView(viewContent);
     }
-    public void setImage(int imageId){
+
+    public void setImage(int imageId) {
         imageView = new ImageView(context);
 
         imageView.setImageResource(imageId);
     }
+
 
 }
